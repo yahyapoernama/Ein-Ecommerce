@@ -1,22 +1,34 @@
+import 'package:ein_ecommerce/screen/home_screen.dart';
+import 'package:ein_ecommerce/screen/onboarding_screen.dart';
 import 'package:flutter/material.dart';
-import 'screen/home_screen.dart'; // Import file home_screen.dart
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('appBox');
+
+  final appBox = Hive.box('appBox');
+  final isFirstLaunch = appBox.get('isFirstLaunch', defaultValue: true);
+
+  runApp(MyApp(isFirstLaunch: isFirstLaunch));
 }
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isFirstLaunch;
+
+  const MyApp({super.key, required this.isFirstLaunch});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Ein Ecommerce',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
         fontFamily: 'Poppins',
       ),
-      home: const HomeScreen(),
+      home: isFirstLaunch ? const OnboardingScreen() : const HomeScreen(),
     );
   }
 }
