@@ -1,3 +1,5 @@
+import 'package:ein_ecommerce/screens/auth/login_screen.dart';
+import 'package:ein_ecommerce/screens/auth/register_screen.dart';
 import 'package:ein_ecommerce/screens/home_screen.dart';
 import 'package:ein_ecommerce/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         fontFamily: 'Poppins',
       ),
-      home: isFirstLaunch ? const OnboardingScreen() : const HomeScreen(),
+      // home: isFirstLaunch ? const OnboardingScreen() : RegisterScreen(),
+      initialRoute: isFirstLaunch ? '/onboarding' : '/register',
+      routes: {
+        '/onboarding': (context) => const OnboardingScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/home': (context) => const HomeScreen(),
+        // Tambahkan route lain di sini
+      },
     );
   }
 }
