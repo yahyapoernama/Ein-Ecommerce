@@ -1,7 +1,7 @@
-import 'package:ein_ecommerce/screen/cart_screen.dart';
-import 'package:ein_ecommerce/screen/chat_screen.dart';
-import 'package:ein_ecommerce/screen/dashboard_screen.dart';
-import 'package:ein_ecommerce/screen/setting_screen.dart';
+import 'package:ein_ecommerce/screens/cart_screen.dart';
+import 'package:ein_ecommerce/screens/chat_screen.dart';
+import 'package:ein_ecommerce/screens/dashboard_screen.dart';
+import 'package:ein_ecommerce/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,13 +13,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   @override

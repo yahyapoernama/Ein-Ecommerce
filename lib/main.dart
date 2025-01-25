@@ -1,5 +1,5 @@
-import 'package:ein_ecommerce/screen/home_screen.dart';
-import 'package:ein_ecommerce/screen/onboarding_screen.dart';
+import 'package:ein_ecommerce/screens/home_screen.dart';
+import 'package:ein_ecommerce/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

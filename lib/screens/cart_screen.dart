@@ -32,17 +32,33 @@ class CartItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // This should be replaced with actual cart items
-    final cartItems = [
-      {'name': 'Item 1', 'price': 29.99},
-      {'name': 'Item 2', 'price': 19.99},
+    final List<Map<String, dynamic>> cartItems = [
+      {
+        'name': 'Product 1',
+        'price': 10000,
+        'quantity': 2,
+      },
+      {
+        'name': 'Product 2',
+        'price': 20000,
+        'quantity': 1,
+      },
+      {
+        'name': 'Product 3',
+        'price': 30000,
+        'quantity': 1,
+      },
     ];
 
     return ListView.builder(
       itemCount: cartItems.length,
       itemBuilder: (context, index) {
+        final item = cartItems[index];
         return ListTile(
-          title: Text(cartItems[index]['name'] as String),
-          trailing: Text('\$${cartItems[index]['price']}'),
+          leading: Image.network('https://static.vecteezy.com/system/resources/previews/035/879/352/non_2x/ai-generated-black-tshirt-isolated-on-transparent-background-free-png.png'),
+          title: Text(item['name']),
+          subtitle: Text('Rp ${item['price']} x ${item['quantity']}'),
+          trailing: Text('Rp ${item['price'] * item['quantity']}'),
         );
       },
     );
@@ -55,7 +71,8 @@ class CheckoutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(10.0),
+      height: 75,
       decoration: BoxDecoration(
         color: Colors.grey[900],
         boxShadow: const [
@@ -70,13 +87,27 @@ class CheckoutSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Total: \$49.98',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Total',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  'Rp 50.000',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange[400],
+                  ),
+                ),
+              ),
+            ],
           ),
           ElevatedButton(
             onPressed: () {},
