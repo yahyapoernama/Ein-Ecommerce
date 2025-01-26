@@ -22,7 +22,6 @@ class ApiService {
       );
       return response;
     } on DioError catch (e) {
-      // print(e.response?.data['statusCode']);
       if (e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.sendTimeout ||
           e.type == DioErrorType.receiveTimeout) {
@@ -38,9 +37,32 @@ class ApiService {
       } else {
         throw 'Failed to register. Please try again.';
       }
-      // print(e.response?.data['errors']);
-      // throw e.response?.data['errors'] ?? 'Failed to register';
-      // throw e.response?.data['message'] ?? 'Failed to register';
+    }
+  }
+
+  Future<Response> login(UserModel userModel) async {
+    try {
+      final response = await _dio.post(
+        '/login',
+        data: userModel.toJson(),
+      );
+      return response;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.sendTimeout ||
+          e.type == DioErrorType.receiveTimeout) {
+        throw 'Connection timed out. Please try again.';
+      } else if (e.response != null) {
+        if (e.response?.data['message'] != null) {
+          throw e.response?.data['message'];
+        } else if (e.response?.data['errors'] != null) {
+          throw e.response?.data['errors'];
+        } else {
+          throw 'Failed to login. Please try again.';
+        }
+      } else {
+        throw 'Failed to login. Please try again.';
+      }
     }
   }
 }

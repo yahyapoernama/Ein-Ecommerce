@@ -31,10 +31,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
       ),
       // home: isFirstLaunch ? const OnboardingScreen() : RegisterScreen(),
-      initialRoute: isFirstLaunch ? '/onboarding' : '/register',
+      initialRoute: isFirstLaunch ? '/onboarding' : '/login',
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/home': (context) => const HomeScreen(),
         // Tambahkan route lain di sini

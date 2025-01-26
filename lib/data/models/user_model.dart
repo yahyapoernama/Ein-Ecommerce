@@ -1,14 +1,14 @@
 class UserModel {
   final int? id; // Bisa null karena tidak ada saat register
   final String username;
-  final String email;
+  final String? email;
   final String password;
   final DateTime? createdAt; // Bisa null karena tidak ada saat register
 
   UserModel({
     this.id,
     required this.username,
-    required this.email,
+    this.email,
     required this.password,
     this.createdAt,
   });

@@ -8,7 +8,14 @@ class AuthRepository {
     try {
       await _apiService.register(userModel);
     } catch (e) {
-      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> login(UserModel userModel) async {
+    try {
+      await _apiService.login(userModel);
+    } catch (e) {
       rethrow;
     }
   }
