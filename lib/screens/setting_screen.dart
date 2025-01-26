@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
   @override
   State<SettingPage> createState() => _SettingPageState();
+}
+
+Future<void> _logout(BuildContext context) async {
+  var box = await Hive.openBox('userBox');
+  await box.clear(); // Hapus semua data sesi
+
+  // Arahkan pengguna ke halaman login
+  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
 }
 
 class _SettingPageState extends State<SettingPage> {
@@ -105,6 +114,17 @@ class _SettingPageState extends State<SettingPage> {
                     onTap: () {
                       // Navigate to about
                     },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.logout,
+                      color: Colors.redAccent,
+                    ),
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.redAccent),
+                    ),
+                    onTap: () => _logout(context),
                   ),
                 ],
               ),
