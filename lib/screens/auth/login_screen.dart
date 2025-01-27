@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import '../../blocs/auth_bloc/login_bloc/login_bloc.dart';
@@ -25,7 +26,8 @@ class LoginScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.orange.withOpacity(0.1),
           title: Column(
             children: [
               const SizedBox(height: 10),
@@ -102,176 +104,192 @@ class LoginScreen extends StatelessWidget {
                 );
               }
             },
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          'assets/images/main.webp',
-                          height: 300,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Username',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      TextFormField(
-                        controller: _usernameController,
-                        focusNode: _usernameFocusNode,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_emailFocusNode);
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Enter your username',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(
-                              color: Colors.orange,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Username is required';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      const Text(
-                        'Password',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      TextFormField(
-                        controller: _passwordController,
-                        focusNode: _passwordFocusNode,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(
-                              color: Colors.orange,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        obscureText: true,
-                        obscuringCharacter: '•', // Mengatur karakter yang digunakan untuk menyembunyikan teks
-                        style: const TextStyle(
-                          letterSpacing: 3.0, // Mengatur jarak antar karakter
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Password is required';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      BlocBuilder<LoginBloc, LoginState>(
-                        builder: (context, state) {
-                          return SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<LoginBloc>().add(
-                                        LoginButtonPressed(
-                                          username: _usernameController.text,
-                                          email: _emailController.text,
-                                          password: _passwordController.text,
-                                        ),
-                                      );
-                                }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(Colors.orange[600]),
-                                foregroundColor: WidgetStateProperty.all(Colors.white),
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                padding: WidgetStateProperty.all(const EdgeInsets.all(15)),
-                              ),
-                              child: state is LoginLoading
-                                  ? const SizedBox(
-                                      width: 26,
-                                      height: 26,
-                                      child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                      ),
-                                    )
-                                  : const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.login),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'Login',
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                          );
-                        },
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Don\'t have an account?'),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, '/register');
-                                },
-                                child: const Text(
-                                  ' Register',
-                                  style: TextStyle(
-                                    color: Colors.orange,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+            child: AnnotatedRegion(
+              value: const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.dark,
+                systemNavigationBarColor: Colors.white,
+                systemNavigationBarIconBrightness: Brightness.dark,
+              ),
+              child: Stack(
+                children: [
+                  CustomPaint(
+                    painter: BlobPainter(),
+                    child: Container(),
                   ),
-                ),
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                'assets/images/main.webp',
+                                height: 300,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'Username',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            TextFormField(
+                              controller: _usernameController,
+                              focusNode: _usernameFocusNode,
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) {
+                                FocusScope.of(context).requestFocus(_emailFocusNode);
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Enter your username',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.orange,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Username is required';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            const Text(
+                              'Password',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            TextFormField(
+                              controller: _passwordController,
+                              focusNode: _passwordFocusNode,
+                              textInputAction: TextInputAction.done,
+                              decoration: InputDecoration(
+                                hintText: 'Enter your password',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.orange,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              ),
+                              obscureText: true,
+                              obscuringCharacter: '•', // Mengatur karakter yang digunakan untuk menyembunyikan teks
+                              style: const TextStyle(
+                                letterSpacing: 3.0, // Mengatur jarak antar karakter
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password is required';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            BlocBuilder<LoginBloc, LoginState>(
+                              builder: (context, state) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        context.read<LoginBloc>().add(
+                                              LoginButtonPressed(
+                                                username: _usernameController.text,
+                                                email: _emailController.text,
+                                                password: _passwordController.text,
+                                              ),
+                                            );
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(Colors.orange[600]),
+                                      foregroundColor: WidgetStateProperty.all(Colors.white),
+                                      shape: WidgetStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      padding: WidgetStateProperty.all(const EdgeInsets.all(15)),
+                                    ),
+                                    child: state is LoginLoading
+                                        ? const SizedBox(
+                                            width: 26,
+                                            height: 26,
+                                            child: CircularProgressIndicator(
+                                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                            ),
+                                          )
+                                        : const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.login),
+                                              SizedBox(width: 8),
+                                              Text(
+                                                'Login',
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                );
+                              },
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Don\'t have an account?'),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(context, '/register');
+                                      },
+                                      child: const Text(
+                                        ' Register',
+                                        style: TextStyle(
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -280,4 +298,43 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class BlobPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.orange.withOpacity(0.1)
+      ..style = PaintingStyle.fill;
+
+    // Blob di bagian atas
+    final path = Path()
+      ..moveTo(0, size.height * 0.1)
+      ..cubicTo(
+        size.width * 0.25, size.height * 0.005,
+        size.width * 0.75, size.height * 0.3,
+        size.width, size.height * 0.05,
+      )
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    // Blob di bagian bawah
+    final path2 = Path()
+      ..moveTo(0, size.height-50)
+      ..cubicTo(
+        size.width * 0.25, size.height * 0.9,
+        size.width * 0.75, size.height * 1.1,
+        size.width, size.height * 0.9,
+      )
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    canvas.drawPath(path, paint);
+    canvas.drawPath(path2, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
