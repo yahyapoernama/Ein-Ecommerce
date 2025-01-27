@@ -1,4 +1,3 @@
-import 'package:ein_ecommerce/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -181,9 +180,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         box.put('isFirstLaunch', false).then((_) {
                           // Pastikan widget masih terpasang sebelum navigasi
                           if (mounted) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => const HomeScreen()),
-                            );
+                            Navigator.of(context).pushReplacementNamed('/login');
                           }
                         });
                       });
