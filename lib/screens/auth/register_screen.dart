@@ -7,9 +7,9 @@ import '../../data/repositories/auth_repository.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController(text: 'okesiap');
-  final _emailController = TextEditingController(text: 'okesiap@mail.com');
-  final _passwordController = TextEditingController(text: 'okesiap123');
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   // Tambahkan FocusNode untuk setiap input
   final FocusNode _usernameFocusNode = FocusNode();
@@ -224,10 +224,7 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ),
                             obscureText: true,
-                            obscuringCharacter: '•', // Mengatur karakter yang digunakan untuk menyembunyikan teks
-                            style: const TextStyle(
-                              letterSpacing: 3.0, // Mengatur jarak antar karakter
-                            ),
+                            obscuringCharacter: '⬤',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Password is required';
@@ -238,7 +235,7 @@ class RegisterScreen extends StatelessWidget {
                           const SizedBox(height: 20),
                           BlocBuilder<RegisterBloc, RegisterState>(
                             builder: (context, state) {
-                              return Container(
+                              return SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {

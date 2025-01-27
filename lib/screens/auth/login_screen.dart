@@ -7,13 +7,11 @@ import '../../data/repositories/auth_repository.dart';
 
 class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController(text: 'okesiap');
-  final _emailController = TextEditingController(text: 'okesiap@mail.com');
-  final _passwordController = TextEditingController(text: 'okesiap123');
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   // Tambahkan FocusNode untuk setiap input
   final FocusNode _usernameFocusNode = FocusNode();
-  final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
   LoginScreen({super.key});
@@ -146,7 +144,7 @@ class LoginScreen extends StatelessWidget {
                               focusNode: _usernameFocusNode,
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
-                                FocusScope.of(context).requestFocus(_emailFocusNode);
+                                FocusScope.of(context).requestFocus(_usernameFocusNode);
                               },
                               decoration: InputDecoration(
                                 hintText: 'Enter your username',
@@ -195,10 +193,7 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                               obscureText: true,
-                              obscuringCharacter: '•', // Mengatur karakter yang digunakan untuk menyembunyikan teks
-                              style: const TextStyle(
-                                letterSpacing: 3.0, // Mengatur jarak antar karakter
-                              ),
+                              obscuringCharacter: '⬤',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Password is required';
@@ -217,7 +212,6 @@ class LoginScreen extends StatelessWidget {
                                         context.read<LoginBloc>().add(
                                               LoginButtonPressed(
                                                 username: _usernameController.text,
-                                                email: _emailController.text,
                                                 password: _passwordController.text,
                                               ),
                                             );
