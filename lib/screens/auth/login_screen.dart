@@ -5,7 +5,15 @@ import 'package:toastification/toastification.dart';
 import '../../blocs/auth_bloc/login_bloc/login_bloc.dart';
 import '../../data/repositories/auth_repository.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -14,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   final FocusNode _usernameFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
-  LoginScreen({super.key});
+  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -191,8 +199,18 @@ class LoginScreen extends StatelessWidget {
                                     width: 2.0,
                                   ),
                                 ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isPasswordVisible = !isPasswordVisible;
+                                  });
+                                },
                               ),
-                              obscureText: true,
+                              ),
+                              obscureText: !isPasswordVisible,
                               obscuringCharacter: '⬤',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {

@@ -5,7 +5,15 @@ import 'package:toastification/toastification.dart';
 import '../../blocs/auth_bloc/register_bloc/register_bloc.dart';
 import '../../data/repositories/auth_repository.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -16,7 +24,7 @@ class RegisterScreen extends StatelessWidget {
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
-  RegisterScreen({super.key});
+  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -222,8 +230,18 @@ class RegisterScreen extends StatelessWidget {
                                   width: 2.0,
                                 ),
                               ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isPasswordVisible = !isPasswordVisible;
+                                  });
+                                },
+                              ),
                             ),
-                            obscureText: true,
+                            obscureText: !isPasswordVisible,
                             obscuringCharacter: '⬤',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
