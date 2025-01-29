@@ -112,8 +112,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   Positioned(
                     bottom: -50,
                     right: -50,
-                    child: Image.network(
-                      'https://www.pngplay.com/wp-content/uploads/7/Discount-PNG-Free-File-Download.png',
+                    child: Image.asset(
+                      'assets/images/dashboard/discount1.webp',
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
@@ -196,8 +196,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                         alignment: Alignment.center, // Potong di tengah
                                         widthFactor: 1, // Faktor pemotongan lebar (100%)
                                         heightFactor: 1, // Faktor pemotongan tinggi (250/300)
-                                        child: Image.network(
-                                          'https://static.vecteezy.com/system/resources/previews/035/879/352/non_2x/ai-generated-black-tshirt-isolated-on-transparent-background-free-png.png',
+                                        child: Image.asset(
+                                          'assets/images/dashboard/shirt1.webp',
                                           height: 150,
                                           fit: BoxFit.cover, // Sesuaikan gambar dengan area yang tersedia
                                         ),
