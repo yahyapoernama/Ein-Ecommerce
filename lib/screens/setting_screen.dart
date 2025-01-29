@@ -8,15 +8,70 @@ class SettingPage extends StatefulWidget {
   State<SettingPage> createState() => _SettingPageState();
 }
 
-Future<void> _logout(BuildContext context) async {
-  var box = await Hive.openBox('userBox');
-  await box.clear(); // Hapus semua data sesi
-
-  // Arahkan pengguna ke halaman login
-  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-}
-
 class _SettingPageState extends State<SettingPage> {
+  Future<void> _logout() async {
+    var box = await Hive.openBox('userBox');
+    await box.clear(); // Hapus semua data sesi
+
+    if (!mounted) return; // Periksa apakah widget masih terpasang
+
+    // Arahkan pengguna ke halaman login
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  }
+
+  Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Dialog tidak bisa ditutup dengan menekan di luar dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.warning,
+                color: Colors.redAccent,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Confirm Logout',
+                style: TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          content: const Text('Are you sure you want to logout?'),
+          backgroundColor: Colors.white,
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Tutup dialog
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'Logout',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Tutup dialog
+                _logout(); // Panggil fungsi logout
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,8 +101,7 @@ class _SettingPageState extends State<SettingPage> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: NetworkImage(
-                        'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'), // Replace with user's photo URL
+                    backgroundImage: AssetImage('assets/images/dashboard/shirt1.webp'), // Replace with user's photo URL
                   ),
                   SizedBox(width: 15),
                   Column(
@@ -122,9 +176,13 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                     title: const Text(
                       'Logout',
-                      style: TextStyle(color: Colors.redAccent),
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    onTap: () => _logout(context),
+                    tileColor: Colors.redAccent.withOpacity(0.1),
+                    onTap: () => _showLogoutConfirmationDialog(context),
                   ),
                 ],
               ),
