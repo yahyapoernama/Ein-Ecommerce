@@ -13,15 +13,23 @@ void main() async {
 
   final appBox = Hive.box('appBox');
   final isFirstLaunch = appBox.get('isFirstLaunch', defaultValue: true);
+  final isLoggedIn = appBox.get('user') != null ? true : false;
 
-  runApp(MyApp(isFirstLaunch: isFirstLaunch));
+  runApp(MyApp(
+    isFirstLaunch: isFirstLaunch,
+    isLoggedIn: isLoggedIn,
+  ));
 }
-
 
 class MyApp extends StatelessWidget {
   final bool isFirstLaunch;
+  final bool isLoggedIn;
 
-  const MyApp({super.key, required this.isFirstLaunch});
+  const MyApp({
+    super.key,
+    required this.isFirstLaunch,
+    required this.isLoggedIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +39,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         fontFamily: 'Poppins',
       ),
-      // home: isFirstLaunch ? const OnboardingScreen() : RegisterScreen(),
-      initialRoute: isFirstLaunch ? '/onboarding' : '/login',
+      initialRoute: isFirstLaunch ? '/onboarding' : isLoggedIn ? '/home' : '/login',
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),

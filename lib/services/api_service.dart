@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../data/models/user_model.dart';
 
 class ApiService {
@@ -46,6 +47,13 @@ class ApiService {
         '/login',
         data: userModel.toJson(),
       );
+      if (response.statusCode == 200) {
+        final token = response.data['token'];
+        final user = response.data['user'];
+        final appBox = Hive.box('appBox');
+        appBox.put('token', token);
+        appBox.put('user', user);
+      }
       return response;
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectTimeout ||

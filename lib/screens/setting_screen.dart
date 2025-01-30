@@ -10,8 +10,9 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   Future<void> _logout() async {
-    var box = await Hive.openBox('userBox');
-    await box.clear(); // Hapus semua data sesi
+    final appBox = Hive.box('appBox');
+    appBox.delete('token');
+    appBox.delete('user');
 
     if (!mounted) return; // Periksa apakah widget masih terpasang
 
