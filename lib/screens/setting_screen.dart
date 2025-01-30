@@ -101,7 +101,7 @@ class _SettingPageState extends State<SettingPage> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage('assets/images/dashboard/shirt1.webp'), // Replace with user's photo URL
+                    backgroundImage: AssetImage('assets/images/sample/profile1.webp'), // Replace with user's photo URL
                   ),
                   SizedBox(width: 15),
                   Column(

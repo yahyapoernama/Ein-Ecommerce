@@ -13,30 +13,50 @@ class _DashboardPageState extends State<DashboardPage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: 15.0, bottom: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20),
-                  Text(
-                    'Hi Ein!',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w300,
-                    ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/profile');
+                        },
+                        child: const CircleAvatar(
+                          radius: 25,
+                          backgroundImage: AssetImage('assets/images/sample/profile1.webp'),
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hi Ein!',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          Text(
+                            'Dashboard',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Dashboard',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Container(

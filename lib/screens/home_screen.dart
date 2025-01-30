@@ -63,23 +63,34 @@ class _HomeScreenState extends State<HomeScreen> {
           iconSize: 30,
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+          items: <BottomNavigationBarItem>[
+            const BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.chat),
               label: 'Chat',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
               label: 'Cart',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+            icon: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black, width: 1),
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/sample/profile1.webp'), // Ganti dengan path ke image asset Anda
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
+            label: 'Settings',
+          ),
           ],
         ),
       ),

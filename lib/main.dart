@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
       initialRoute: isFirstLaunch ? '/onboarding' : '/login',
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
         // Tambahkan route lain di sini
       },
