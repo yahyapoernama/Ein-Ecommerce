@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                   progressBarTheme: ProgressIndicatorThemeData(
-                    color: Colors.orange[600],
+                    color: Colors.orange[300],
                   ),
                   alignment: Alignment.bottomCenter,
                   description: const Text('Login successful!'),
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
                   progressBarTheme: ProgressIndicatorThemeData(
-                    color: Colors.orange[600],
+                    color: Colors.orange[300],
                   ),
                   alignment: Alignment.bottomCenter,
                   autoCloseDuration: const Duration(seconds: 5),
