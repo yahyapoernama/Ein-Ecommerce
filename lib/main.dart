@@ -2,6 +2,7 @@ import 'package:ein_ecommerce/screens/auth/login_screen.dart';
 import 'package:ein_ecommerce/screens/auth/register_screen.dart';
 import 'package:ein_ecommerce/screens/home_screen.dart';
 import 'package:ein_ecommerce/screens/onboarding_screen.dart';
+import 'package:ein_ecommerce/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -37,7 +38,27 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
-        // Tambahkan route lain di sini
+        '/search': (context) => const SearchScreen()
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/search') {
+          return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => SearchScreen(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          );
+        }
+        return null;
       },
     );
   }

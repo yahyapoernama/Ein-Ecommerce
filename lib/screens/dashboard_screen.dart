@@ -56,6 +56,15 @@ class _DashboardPageState extends State<DashboardPage> {
                     ],
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/search');
+                  },
+                  child: const Icon(
+                    Icons.search,
+                    size: 30,
+                  ),
+                ),
               ],
             ),
           ),
