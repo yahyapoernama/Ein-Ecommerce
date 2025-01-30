@@ -35,17 +35,17 @@ class CartItems extends StatelessWidget {
     final List<Map<String, dynamic>> cartItems = [
       {
         'name': 'Product 1',
-        'price': 10000,
+        'price': 50000,
         'quantity': 2,
       },
       {
         'name': 'Product 2',
-        'price': 20000,
+        'price': 50000,
         'quantity': 1,
       },
       {
         'name': 'Product 3',
-        'price': 30000,
+        'price': 50000,
         'quantity': 1,
       },
     ];
@@ -87,10 +87,10 @@ class CheckoutSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Total',
                 style: TextStyle(
                   fontSize: 14,
@@ -99,11 +99,11 @@ class CheckoutSection extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  'Rp 50.000',
+                  'Rp 200.000',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.orange[400],
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -112,7 +112,7 @@ class CheckoutSection extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.orange[400]),
+              backgroundColor: WidgetStateProperty.all(Colors.green),
               foregroundColor: WidgetStateProperty.all(Colors.white),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
