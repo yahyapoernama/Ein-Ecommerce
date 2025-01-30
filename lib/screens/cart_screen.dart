@@ -55,7 +55,7 @@ class CartItems extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = cartItems[index];
         return ListTile(
-          leading: Image.network('https://static.vecteezy.com/system/resources/previews/035/879/352/non_2x/ai-generated-black-tshirt-isolated-on-transparent-background-free-png.png'),
+          leading: Image.asset('assets/images/dashboard/shirt1.webp'),
           title: Text(item['name']),
           subtitle: Text('Rp ${item['price']} x ${item['quantity']}'),
           trailing: Text('Rp ${item['price'] * item['quantity']}'),
