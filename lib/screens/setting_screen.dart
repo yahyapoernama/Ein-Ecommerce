@@ -8,7 +8,10 @@ class SettingPage extends StatefulWidget {
   State<SettingPage> createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends State<SettingPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   Future<void> _logout() async {
     final appBox = Hive.box('appBox');
     appBox.delete('token');
@@ -75,6 +78,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -100,9 +104,17 @@ class _SettingPageState extends State<SettingPage> {
               padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/images/sample/profile1.webp'), // Replace with user's photo URL
+                  ClipOval(
+                    child: Image(
+                      image: ResizeImage(
+                        AssetImage('assets/images/sample/profile1.webp'),
+                        width: 100, // Atur lebar gambar yang di-resize
+                        height: 100, // Atur tinggi gambar yang di-resize
+                      ),
+                      fit: BoxFit.cover,
+                      width: 60, // Atur lebar gambar
+                      height: 60, // Atur tinggi gambar
+                    ),
                   ),
                   SizedBox(width: 15),
                   Column(
@@ -126,10 +138,6 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ],
               ),
-            ),
-            const Divider(
-              indent: 20,
-              endIndent: 20,
             ),
             Expanded(
               child: ListView(

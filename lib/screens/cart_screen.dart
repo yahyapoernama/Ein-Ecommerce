@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roundcheckbox/roundcheckbox.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -7,9 +8,13 @@ class CartPage extends StatefulWidget {
   State<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
+class _CartPageState extends State<CartPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -55,10 +60,54 @@ class CartItems extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = cartItems[index];
         return ListTile(
-          leading: Image.asset('assets/images/dashboard/shirt1.webp'),
-          title: Text(item['name']),
-          subtitle: Text('Rp ${item['price']} x ${item['quantity']}'),
-          trailing: Text('Rp ${item['price'] * item['quantity']}'),
+          leading: RoundCheckBox(
+            animationDuration: const Duration(milliseconds: 100),
+            checkedColor: Colors.grey[900],
+            size: 30,
+            onTap: (value) {},
+          ),
+          title: Row(
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.black),
+                  image: const DecorationImage(
+                    image: AssetImage(
+                      'assets/images/dashboard/shirt1.webp',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['name'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Rp ${item['price']} x ${item['quantity']}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          trailing: Text(
+            'Rp ${item['price'] * item['quantity']}',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[900],
+            ),
+          ),
         );
       },
     );
@@ -70,68 +119,113 @@ class CheckoutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      height: 75,
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, -3), // Shadow ke atas
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SizedBox(
+      height: 140,
+      child: Column(
         children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Total',
-                style: TextStyle(
-                  fontSize: 14,
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            decoration: const BoxDecoration(
+              color: Colors.orange,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, -3), // Shadow ke atas
+                ),
+              ],
+            ),
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.local_offer,
                   color: Colors.white,
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  'Rp 200.000',
+                SizedBox(width: 10),
+                Text(
+                  'Masukkan Kupon',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-              ),
-            ],
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.green),
-              foregroundColor: WidgetStateProperty.all(Colors.white),
-              shape: WidgetStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.upload),
-                SizedBox(width: 5),
-                Text(
-                  'Checkout',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
                 ),
               ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, -3), // Shadow ke atas
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Total',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[900],
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Rp 200.000',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[900],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(Colors.green),
+                      foregroundColor: WidgetStateProperty.all(Colors.white),
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.upload),
+                        SizedBox(width: 5),
+                        Text(
+                          'Checkout',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

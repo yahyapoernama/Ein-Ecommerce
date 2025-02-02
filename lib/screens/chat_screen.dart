@@ -7,9 +7,13 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -81,14 +85,21 @@ class _ChatPageState extends State<ChatPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  return const ListTile(
+                  return ListTile(
                     leading: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage('assets/images/dashboard/shirt1.webp'),
+                    radius: 30,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/dashboard/shirt1.webp',
+                        fit: BoxFit.cover, // Atur scaling gambar
+                        width: 50, // Atur lebar gambar
+                        height: 50, // Atur tinggi gambar
+                      ),
                     ),
-                    title: Text('User Name'),
-                    subtitle: Text('Message'),
-                    trailing: Text('10:00'),
+                  ),
+                    title: const Text('User Name'),
+                    subtitle: const Text('Message'),
+                    trailing: const Text('10:00'),
                   );
                 },
                 childCount: 10, // Jumlah item dalam daftar
