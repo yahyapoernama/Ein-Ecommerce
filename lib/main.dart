@@ -1,9 +1,10 @@
+import 'package:ein_ecommerce/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:ein_ecommerce/screens/auth/login_screen.dart';
 import 'package:ein_ecommerce/screens/auth/register_screen.dart';
 import 'package:ein_ecommerce/screens/home_screen.dart';
 import 'package:ein_ecommerce/screens/onboarding_screen.dart';
-import 'package:ein_ecommerce/screens/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -33,40 +34,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Ein Ecommerce',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        fontFamily: 'Poppins',
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => TransactionBloc()),
+      ],
+      child: MaterialApp(
+        title: 'Ein Ecommerce',
+        theme: ThemeData(
+          primarySwatch: Colors.orange,
+          fontFamily: 'Poppins',
+          scaffoldBackgroundColor: Colors.white,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange),
+        ),
+        initialRoute: isFirstLaunch ? '/onboarding' : isLoggedIn ? '/home' : '/login',
+        routes: {
+          '/onboarding': (context) => const OnboardingScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/register': (context) => const RegisterScreen(),
+          '/home': (context) => const HomeScreen(),
+        },
       ),
-      initialRoute: isFirstLaunch ? '/onboarding' : isLoggedIn ? '/home' : '/login',
-      routes: {
-        '/onboarding': (context) => const OnboardingScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/search': (context) => const SearchScreen()
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/search') {
-          return PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => SearchScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.ease;
-
-              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            },
-          );
-        }
-        return null;
-      },
     );
   }
 }
