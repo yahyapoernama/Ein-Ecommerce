@@ -1,8 +1,6 @@
 import 'package:ein_ecommerce/blocs/transaction_bloc/transaction_bloc.dart';
-import 'package:ein_ecommerce/screens/auth/login_screen.dart';
-import 'package:ein_ecommerce/screens/auth/register_screen.dart';
-import 'package:ein_ecommerce/screens/home_screen.dart';
-import 'package:ein_ecommerce/screens/onboarding_screen.dart';
+import 'package:ein_ecommerce/routes/app_router.dart';
+import 'package:ein_ecommerce/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -46,13 +44,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange),
         ),
-        initialRoute: isFirstLaunch ? '/onboarding' : isLoggedIn ? '/home' : '/login',
-        routes: {
-          '/onboarding': (context) => const OnboardingScreen(),
-          '/login': (context) => const LoginScreen(),
-          '/register': (context) => const RegisterScreen(),
-          '/home': (context) => const HomeScreen(),
-        },
+        initialRoute: isFirstLaunch ? Routes.onboarding : isLoggedIn ? Routes.home : Routes.login,
+        onGenerateRoute: AppRouter.onGenerateRoute,
       ),
     );
   }
