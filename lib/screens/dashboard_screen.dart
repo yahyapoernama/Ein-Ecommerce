@@ -1,3 +1,4 @@
+import 'package:ein_ecommerce/components/buttons/primary_button.dart';
 import 'package:ein_ecommerce/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -12,7 +13,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -143,24 +144,10 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                               style: TextStyle(fontSize: 16, color: Colors.white),
                             ),
                             const SizedBox(height: 16),
-                            ElevatedButton(
+                            PrimaryButton(
+                              text: 'Check Now',
+                              backgroundColor: Colors.orange[400],
                               onPressed: () {},
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(Colors.orange[400]),
-                                foregroundColor: WidgetStateProperty.all(Colors.white),
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
-                              ),
-                              child: const Text(
-                                'Check Now',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -194,20 +181,14 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(Colors.grey[600]),
-                            foregroundColor: WidgetStateProperty.all(Colors.white),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            padding: WidgetStateProperty.all(const EdgeInsets.all(0)),
-                          ),
-                          child: const Text('See All'),
-                        ),
+                        PrimaryButton(
+                          text: 'See All',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/trending');
+                          },
+                          backgroundColor: Colors.grey[600],
+                          textSize: 14,
+                        )
                       ],
                     ),
                     const SizedBox(height: 8),
