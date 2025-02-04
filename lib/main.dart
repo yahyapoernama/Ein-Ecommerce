@@ -1,4 +1,5 @@
 import 'package:ein_ecommerce/blocs/transaction_bloc/transaction_bloc.dart';
+import 'package:ein_ecommerce/utils/color_helper.dart';
 import 'package:ein_ecommerce/routes/app_router.dart';
 import 'package:ein_ecommerce/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +40,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Ein Ecommerce',
         theme: ThemeData(
-          primarySwatch: Colors.orange,
+          primarySwatch: createMaterialColor(Colors.grey[900]!),
           fontFamily: 'Poppins',
           scaffoldBackgroundColor: Colors.white,
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange),
         ),
+        debugShowCheckedModeBanner: false,
         initialRoute: isFirstLaunch ? Routes.onboarding : isLoggedIn ? Routes.home : Routes.login,
         onGenerateRoute: AppRouter.onGenerateRoute,
       ),
