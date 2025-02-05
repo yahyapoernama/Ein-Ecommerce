@@ -193,7 +193,9 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                         PrimaryButton(
                           text: 'Check Now',
                           backgroundColor: Colors.orange[400],
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/flash-sale');
+                          },
                         ),
                       ],
                     ),
