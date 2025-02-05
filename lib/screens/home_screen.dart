@@ -1,3 +1,4 @@
+import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:ein_ecommerce/screens/cart_screen.dart';
 import 'package:ein_ecommerce/screens/chat_screen.dart';
 import 'package:ein_ecommerce/screens/dashboard_screen.dart';
@@ -27,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(preferredSize: const Size.fromHeight(0), child: Container()),
       body: SafeArea(
         child: PageView(
           controller: _pageController,
@@ -56,39 +56,48 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
           ],
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          fixedColor: Colors.orange[400],
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false, // Sembunyikan label saat item dipilih
-          showUnselectedLabels: false, // Sembunyikan label saat item tidak dipilih
-          iconSize: 25,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list_alt),
-              label: 'Transaction',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Account',
-            ),
-          ],
+        child: BottomNavigationBarTheme(
+          data: BottomNavigationBarThemeData(
+            selectedItemColor: AppColors.primary,
+            unselectedItemColor: Colors.grey,
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            fixedColor: AppColors.primary,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false, // Sembunyikan label saat item dipilih
+            showUnselectedLabels: false, // Sembunyikan label saat item tidak dipilih
+            iconSize: 25,
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            items: <BottomNavigationBarItem>[
+              _buildNavItem(Icons.home, 'Home', 0),
+              _buildNavItem(Icons.chat, 'Chat', 1),
+              _buildNavItem(Icons.shopping_cart, 'Cart', 2),
+              _buildNavItem(Icons.list_alt, 'Transaction', 3),
+              _buildNavItem(Icons.person, 'Account', 4),
+            ],
+          ),
         ),
       ),
+    );
+  }
+  
+  BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
+    return BottomNavigationBarItem(
+      icon: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: _selectedIndex == index ? AppColors.primary : Colors.transparent,
+              width: 2,
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.only(top: 4),
+        child: Icon(icon),
+      ),
+      label: label,
     );
   }
 }
