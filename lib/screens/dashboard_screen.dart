@@ -1,7 +1,7 @@
 import 'package:ein_ecommerce/components/buttons/primary_button.dart';
+import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:ein_ecommerce/screens/search_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -17,21 +17,20 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return LiquidPullToRefresh(
+    return RefreshIndicator(
       onRefresh: () async {
         await Future.delayed(const Duration(seconds: 1));
       },
-      color: Colors.orange[600],
+      color: AppColors.primary,
       backgroundColor: Colors.white,
-      showChildOpacityTransition: false,
-      animSpeedFactor: 4,
       child: Scaffold(
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              Padding(
+              Container(
                 padding: const EdgeInsets.all(15.0),
+                margin: const EdgeInsets.only(bottom: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +58,7 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                             ),
                           ),
                           const SizedBox(width: 15),
-                          const Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -67,6 +66,7 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w300,
+                                  color: AppColors.primary,
                                 ),
                               ),
                               Text(
@@ -74,6 +74,7 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
                                 ),
                               ),
                             ],
@@ -88,9 +89,10 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                           delegate: SearchScreenDelegate(),
                         );
                       },
-                      child: const Icon(
+                      child: Icon(
                         Icons.search,
                         size: 30,
+                        color: AppColors.primary,
                       ),
                     ),
                   ],
