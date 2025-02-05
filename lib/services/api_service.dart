@@ -4,9 +4,10 @@ import '../data/models/user_model.dart';
 
 class ApiService {
   final Dio _dio = Dio();
+  String get baseUrl => 'http://192.168.0.17:5000/api';
 
   ApiService() {
-    _dio.options.baseUrl = 'http://192.168.0.17:5000/api/auth'; // Sesuaikan dengan URL API
+    _dio.options.baseUrl = baseUrl;
     _dio.options.headers = {
       'Content-Type': 'application/json',
     };
@@ -18,7 +19,7 @@ class ApiService {
   Future<Response> register(UserModel userModel) async {
     try {
       final response = await _dio.post(
-        '/register',
+        '/auth/register',
         data: userModel.toJson(),
       );
       return response;
@@ -44,7 +45,7 @@ class ApiService {
   Future<Response> login(UserModel userModel) async {
     try {
       final response = await _dio.post(
-        '/login',
+        '/auth/login',
         data: userModel.toJson(),
       );
       if (response.statusCode == 200) {
