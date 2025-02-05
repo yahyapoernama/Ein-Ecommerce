@@ -87,16 +87,16 @@ class _ChatPageState extends State<ChatPage> with AutomaticKeepAliveClientMixin 
                 (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
-                    radius: 30,
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/dashboard/shirt1.webp',
-                        fit: BoxFit.cover, // Atur scaling gambar
-                        width: 50, // Atur lebar gambar
-                        height: 50, // Atur tinggi gambar
+                      radius: 30,
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/dashboard/shirt1.webp',
+                          fit: BoxFit.cover, // Atur scaling gambar
+                          width: 50, // Atur lebar gambar
+                          height: 50, // Atur tinggi gambar
+                        ),
                       ),
                     ),
-                  ),
                     title: const Text('User Name'),
                     subtitle: const Text('Message'),
                     trailing: const Text('10:00'),
