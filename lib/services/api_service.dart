@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../data/models/user_model.dart';
-import 'package:dotenv/dotenv.dart' as dotenv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
   final Dio _dio = Dio();
-  final String _apiUrl = dotenv.env['API_URL'] ?? '';
+  final _apiUrl = dotenv.env['API_URL'] ?? '';
   String get baseUrl => _apiUrl;
 
   ApiService() {
@@ -14,8 +14,8 @@ class ApiService {
       'Content-Type': 'application/json',
     };
     _dio.options.connectTimeout = 10000; // 10 detik
-    _dio.options.receiveTimeout = 30000; // 30 detik
-    _dio.options.sendTimeout = 30000; // 30 detik
+    _dio.options.receiveTimeout = 20000; // 30 detik
+    _dio.options.sendTimeout = 20000; // 30 detik
   }
 
   Future<Response> register(UserModel userModel) async {
