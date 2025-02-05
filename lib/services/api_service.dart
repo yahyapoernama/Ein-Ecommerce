@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../data/models/user_model.dart';
+import 'package:dotenv/dotenv.dart' as dotenv;
 
 class ApiService {
   final Dio _dio = Dio();
-  String get baseUrl => 'http://192.168.0.17:5000/api';
+  final String _apiUrl = dotenv.env['API_URL'] ?? '';
+  String get baseUrl => _apiUrl;
 
   ApiService() {
     _dio.options.baseUrl = baseUrl;

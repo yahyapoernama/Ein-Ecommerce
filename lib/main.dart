@@ -8,8 +8,11 @@ import 'package:ein_ecommerce/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:dotenv/dotenv.dart' as dotenv;
 
 void main() async {
+  dotenv.load();
+
   await Hive.initFlutter();
   await Hive.openBox('appBox');
 
