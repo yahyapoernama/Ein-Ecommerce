@@ -21,7 +21,7 @@ class NoInternetState extends AppConnectionState {
 class ServerUnreachableState extends AppConnectionState {
   final String message;
   const ServerUnreachableState({
-    this.message = 'Server Unreachable',
+    this.message = 'Service Unavailable',
   });
 }
 
@@ -30,6 +30,6 @@ class ConnectedState extends AppConnectionState {}
 class UnknownErrorState extends AppConnectionState {
   final String message;
   const UnknownErrorState({
-    this.message = 'Unknown Error',
+    this.message = 'Internal Server Error',
   });
 }

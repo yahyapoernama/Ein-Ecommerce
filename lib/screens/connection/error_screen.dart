@@ -24,16 +24,16 @@ class _ErrorScreenState extends State<ErrorScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error,
-              size: 150,
+            Image.asset(
+              'assets/images/error.webp',
+              width: 300,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             Text(
               widget.errorType,
               style: const TextStyle(fontSize: 24),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 36),
             PrimaryButton(
               text: 'Retry',
               onPressed: () {
