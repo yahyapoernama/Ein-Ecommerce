@@ -1,4 +1,6 @@
 import 'package:ein_ecommerce/blocs/app_connection_bloc/app_connection_bloc.dart';
+import 'package:ein_ecommerce/components/buttons/primary_button.dart';
+import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,16 +24,24 @@ class _ErrorScreenState extends State<ErrorScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Icon(
+              Icons.error,
+              size: 150,
+            ),
+            const SizedBox(height: 8),
             Text(
               widget.errorType,
               style: const TextStyle(fontSize: 24),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
+            PrimaryButton(
+              text: 'Retry',
               onPressed: () {
                 context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
               },
-              child: const Text('Retry'),
+              backgroundColor: AppColors.primary,
+              icon: Icons.refresh,
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
             ),
           ],
         ),

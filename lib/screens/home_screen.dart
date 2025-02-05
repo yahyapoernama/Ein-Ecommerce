@@ -5,6 +5,7 @@ import 'package:ein_ecommerce/screens/dashboard_screen.dart';
 import 'package:ein_ecommerce/screens/setting_screen.dart';
 import 'package:ein_ecommerce/screens/transaction_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,21 +29,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          children: const <Widget>[
-            DashboardPage(),
-            ChatPage(),
-            CartPage(),
-            TransactionPage(),
-            SettingPage(),
-          ],
+      body: AnnotatedRegion(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        child: SafeArea(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: const <Widget>[
+              DashboardPage(),
+              ChatPage(),
+              CartPage(),
+              TransactionPage(),
+              SettingPage(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -82,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
     );
   }
-  
+
   BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
     return BottomNavigationBarItem(
       icon: Container(

@@ -6,14 +6,18 @@ class PrimaryButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final double? textSize;
+  final IconData? icon;
+  final EdgeInsets? padding;
 
   const PrimaryButton({
     super.key,
     required this.text,
     required this.onPressed,
-    this.backgroundColor = Colors.black12,
+    this.backgroundColor = const Color(0xFF212121),
     this.foregroundColor = Colors.white,
     this.textSize = 18,
+    this.icon,
+    this.padding = const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
   });
 
   @override
@@ -30,12 +34,20 @@ class PrimaryButton extends StatelessWidget {
         ),
         padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: textSize,
-        ),
-      ),
+      child: icon == null
+          ? Text(text, style: TextStyle(fontSize: textSize))
+          : Container(
+            padding: padding,
+            child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon),
+                  const SizedBox(width: 10),
+                  Text(text, style: TextStyle(fontSize: textSize)),
+                ],
+              ),
+          ),
     );
   }
 }

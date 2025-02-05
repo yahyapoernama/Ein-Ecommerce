@@ -6,7 +6,6 @@ import 'package:ein_ecommerce/screens/search_screen.dart';
 import 'package:ein_ecommerce/utils/shimmer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -39,15 +38,11 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
         body: BlocBuilder<AppConnectionBloc, AppConnectionState>(
           builder: (context, state) {
             if (state is AppConnectionInitial) {
-              return Shimmer.fromColors(
-                baseColor: Colors.grey[700]!,
-                highlightColor: Colors.grey[300]!,
-                child: _buildDashboardBody(context),
+              return ShimmerHelper(
+                child: (context) => _buildDashboardBody(context),
               );
             } else if (state is NoInternetState) {
-              return const Center(
-                child: Text('No internet connection'),
-              );
+              return ErrorScreen(errorType: state.message);
             } else if (state is ServerUnreachableState) {
               return ErrorScreen(errorType: state.message);
             } else if (state is ConnectedState) {
