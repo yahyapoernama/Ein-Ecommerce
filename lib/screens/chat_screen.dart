@@ -45,6 +45,7 @@ class _ChatPageState extends State<ChatPage> with AutomaticKeepAliveClientMixin 
               pinned: true,
               floating: true,
               backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   padding: const EdgeInsets.all(8),
@@ -96,6 +97,7 @@ class _ChatPageState extends State<ChatPage> with AutomaticKeepAliveClientMixin 
                           height: 50, // Atur tinggi gambar
                         ),
                       ),
+                      backgroundColor: Colors.orange[600],
                     ),
                     title: const Text('User Name'),
                     subtitle: const Text('Message'),
