@@ -12,6 +12,18 @@ class _SettingPageState extends State<SettingPage> with AutomaticKeepAliveClient
   @override
   bool get wantKeepAlive => true;
 
+  String _username = '';
+  String _email = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final box = Hive.box('appBox');
+    _username = box.get('user', defaultValue: const {})['username'] ?? '';
+    _email = box.get('user', defaultValue: const {})['email'] ?? '';
+    setState(() {});
+  }
+
   Future<void> _logout() async {
     final appBox = Hive.box('appBox');
     appBox.delete('token');
@@ -100,11 +112,11 @@ class _SettingPageState extends State<SettingPage> with AutomaticKeepAliveClient
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               child: Row(
                 children: [
-                  ClipOval(
+                  const ClipOval(
                     child: Image(
                       image: ResizeImage(
                         AssetImage('assets/images/sample/profile1.webp'),
@@ -116,20 +128,20 @@ class _SettingPageState extends State<SettingPage> with AutomaticKeepAliveClient
                       height: 60, // Atur tinggi gambar
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'User Name', // Replace with user's name
-                        style: TextStyle(
+                        _username, // Replace with user's name
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        'user@example.com', // Replace with user's email
-                        style: TextStyle(
+                        _email, // Replace with user's email
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
                         ),
