@@ -16,13 +16,20 @@ class TransactionPage extends StatefulWidget {
 class _TransactionPageState extends State<TransactionPage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transaction'),
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Transaction',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),

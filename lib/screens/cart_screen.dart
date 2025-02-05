@@ -17,6 +17,7 @@ class _CartPageState extends State<CartPage> with AutomaticKeepAliveClientMixin 
     super.build(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'Cart',
           style: TextStyle(
