@@ -105,20 +105,25 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Hi $_username!',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w300,
-                              color: AppColors.primary,
+                          ShimmerContainer(
+                            child: Text(
+                              'Hi $_username!',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w300,
+                                color: AppColors.primary,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Dashboard',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
+                          const SizedBox(height: 3),
+                          ShimmerContainer(
+                            child: Text(
+                              'Dashboard',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
                             ),
                           ),
                         ],
@@ -133,10 +138,12 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                       delegate: SearchScreenDelegate(),
                     );
                   },
-                  child: Icon(
-                    Icons.search,
-                    size: 30,
-                    color: AppColors.primary,
+                  child: ShimmerContainer(
+                    child: Icon(
+                      Icons.search,
+                      size: 30,
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
               ],
@@ -222,11 +229,13 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Trending',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    const ShimmerContainer(
+                      child: Text(
+                        'Trending',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     PrimaryButton(

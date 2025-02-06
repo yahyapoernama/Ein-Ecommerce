@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      showBottomNavBar();
     });
     _pageController.jumpToPage(index);
     // _pageController.animateToPage(index, duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
@@ -40,31 +41,32 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         }
       },
       child: Scaffold(
-          body: AnnotatedRegion(
-            value: const SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark,
-            ),
-            child: SafeArea(
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                children: const <Widget>[
-                  DashboardPage(),
-                  ChatPage(),
-                  CartPage(),
-                  TransactionPage(),
-                  SettingPage(),
-                ],
-              ),
+        body: AnnotatedRegion(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+          child: SafeArea(
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              children: const <Widget>[
+                DashboardPage(),
+                ChatPage(),
+                CartPage(),
+                TransactionPage(),
+                SettingPage(),
+              ],
             ),
           ),
-          bottomNavigationBar: _bottomNavigationBar),
+        ),
+        bottomNavigationBar: _bottomNavigationBar,
+      ),
     );
   }
 
@@ -113,6 +115,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       );
     });
   }
+
+  // Container _bottomNavBar() {
+  //   return
+  // }
 
   BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
     return BottomNavigationBarItem(

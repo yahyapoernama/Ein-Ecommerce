@@ -22,3 +22,31 @@ class ShimmerHelper extends StatelessWidget {
     );
   }
 }
+
+class ShimmerContainer extends StatelessWidget {
+  final double? width;
+  final double? height;
+  final double borderRadius;
+  final Widget? child;
+
+  const ShimmerContainer({
+    super.key,
+    this.width,
+    this.height,
+    this.borderRadius = 8,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      child: child,
+    );
+  }
+}

@@ -1,5 +1,11 @@
+import 'package:ein_ecommerce/blocs/app_connection_bloc/app_connection_bloc.dart';
+import 'package:ein_ecommerce/constants/app_colors.dart';
+import 'package:ein_ecommerce/screens/connection/error_screen.dart';
+import 'package:ein_ecommerce/utils/shimmer_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -11,7 +17,7 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -37,6 +43,36 @@ class CartItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return RefreshIndicator(
+      displacement: 20,
+      onRefresh: () async {
+        context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
+      },
+      color: AppColors.primary,
+      backgroundColor: Colors.white,
+      child: Scaffold(
+        body: BlocBuilder<AppConnectionBloc, AppConnectionState>(
+          builder: (context, state) {
+            if (state is AppConnectionInitial) {
+              return ShimmerHelper(
+                child: (context) => _buildCartBody(context),
+              );
+            } else if (state is NoInternetState) {
+              return ErrorScreen(errorType: state.message);
+            } else if (state is ServerUnreachableState) {
+              return ErrorScreen(errorType: state.message);
+            } else if (state is ConnectedState) {
+              return _buildCartBody(context);
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCartBody(BuildContext context) {
     // This should be replaced with actual cart items
     final List<Map<String, dynamic>> cartItems = [
       {
@@ -61,11 +97,13 @@ class CartItems extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = cartItems[index];
         return ListTile(
-          leading: RoundCheckBox(
-            animationDuration: const Duration(milliseconds: 100),
-            checkedColor: Colors.grey[900],
-            size: 30,
-            onTap: (value) {},
+          leading: ShimmerContainer(
+            child: RoundCheckBox(
+              animationDuration: const Duration(milliseconds: 100),
+              checkedColor: Colors.grey[900],
+              size: 30,
+              onTap: (value) {},
+            ),
           ),
           title: Row(
             children: [
@@ -73,6 +111,7 @@ class CartItems extends StatelessWidget {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.black),
                   image: const DecorationImage(
@@ -87,26 +126,32 @@ class CartItems extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item['name'],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ShimmerContainer(
+                    child: Text(
+                      item['name'],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  Text(
-                    'Rp ${item['price']} x ${item['quantity']}',
-                    style: const TextStyle(
-                      fontSize: 14,
+                  ShimmerContainer(
+                    child: Text(
+                      'Rp ${item['price']} x ${item['quantity']}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          trailing: Text(
-            'Rp ${item['price'] * item['quantity']}',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[900],
+          trailing: ShimmerContainer(
+            child: Text(
+              'Rp ${item['price'] * item['quantity']}',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[900],
+              ),
             ),
           ),
         );
@@ -120,6 +165,20 @@ class CheckoutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<AppConnectionBloc, AppConnectionState>(
+      builder: (context, state) {
+        if (state is ConnectedState) {
+          return _buildCheckoutButton(context);
+        } else {
+          return ShimmerHelper(
+            child: (context) => _buildCheckoutButton(context),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildCheckoutButton(BuildContext context) {
     return SizedBox(
       height: 140,
       child: Column(
