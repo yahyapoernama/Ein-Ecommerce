@@ -76,37 +76,43 @@ class _CartItemsState extends State<CartItems> {
     );
   }
 
+  List<Map<String, dynamic>> dummyCartItems = List.generate(10, (index) {
+    return {
+      'name': 'Product Name',
+      'price': 100000,
+      'quantity': 100,
+    };
+  });
+
+  // This should be replaced with actual cart items
+  final List<Map<String, dynamic>> actualCartItems = [
+    {
+      'name': 'Product 1',
+      'price': 50000,
+      'quantity': 2,
+    },
+    {
+      'name': 'Product 2',
+      'price': 50000,
+      'quantity': 1,
+    },
+    {
+      'name': 'Product 3',
+      'price': 50000,
+      'quantity': 1,
+    },
+  ];
+
+  List<Map<String, dynamic>> cartItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    cartItems = dummyCartItems;
+  }
+
   Widget _buildCartBody(BuildContext context) {
-    List<Map<String, dynamic>> dummyCartItems = List.generate(10, (index) {
-      return {
-        'name': 'Product Name',
-        'price': 100000,
-        'quantity': 100,
-      };
-    });
-
-    List<Map<String, dynamic>> cartItems = dummyCartItems;
-
-    // This should be replaced with actual cart items
-    final List<Map<String, dynamic>> actualCartItems = [
-      {
-        'name': 'Product 1',
-        'price': 50000,
-        'quantity': 2,
-      },
-      {
-        'name': 'Product 2',
-        'price': 50000,
-        'quantity': 1,
-      },
-      {
-        'name': 'Product 3',
-        'price': 50000,
-        'quantity': 1,
-      },
-    ];
-
-    return BlocListener<AppConnectionBloc, AppConnectionState>(
+    return BlocConsumer<AppConnectionBloc, AppConnectionState>(
       listener: (context, state) {
         if (state is ConnectedState) {
           cartItems = actualCartItems;
@@ -114,73 +120,71 @@ class _CartItemsState extends State<CartItems> {
           cartItems = dummyCartItems;
         }
       },
-      child: BlocBuilder<AppConnectionBloc, AppConnectionState>(
-        builder: (context, state) {
-          return ListView.builder(
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) {
-                final item = cartItems[index];
-                return ListTile(
-                  leading: ShimmerContainer(
-                    child: RoundCheckBox(
-                      animationDuration: const Duration(milliseconds: 100),
-                      checkedColor: Colors.grey[900],
-                      size: 30,
-                      onTap: (value) {},
+      builder: (context, state) {
+        return ListView.builder(
+          itemCount: cartItems.length,
+          itemBuilder: (context, index) {
+            final item = cartItems[index];
+            return ListTile(
+              leading: ShimmerContainer(
+                child: RoundCheckBox(
+                  animationDuration: const Duration(milliseconds: 100),
+                  checkedColor: Colors.grey[900],
+                  size: 30,
+                  onTap: (value) {},
+                ),
+              ),
+              title: Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.black),
+                      image: const DecorationImage(
+                        image: AssetImage(
+                          'assets/images/dashboard/shirt1.webp',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  title: Row(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.black),
-                          image: const DecorationImage(
-                            image: AssetImage(
-                              'assets/images/dashboard/shirt1.webp',
-                            ),
-                            fit: BoxFit.cover,
+                  const SizedBox(width: 12),
+                  ShimmerContainer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['name'],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Rp ${item['price']} x ${item['quantity']}',
+                          style: const TextStyle(
+                            fontSize: 14,
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      ShimmerContainer(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['name'],
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Rp ${item['price']} x ${item['quantity']}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: ShimmerContainer(
-                    child: Text(
-                      'Rp ${item['price'] * item['quantity']}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[900],
-                      ),
+                      ],
                     ),
                   ),
-                );
-              },
+                ],
+              ),
+              trailing: ShimmerContainer(
+                child: Text(
+                  'Rp ${item['price'] * item['quantity']}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[900],
+                  ),
+                ),
+              ),
             );
-        },
-      ),
+          },
+        );
+      },
     );
   }
 }
