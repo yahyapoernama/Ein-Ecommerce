@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       showBottomNavBar();
     });
     _pageController.jumpToPage(index);
-    // _pageController.animateToPage(index, duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
   }
 
   @override
@@ -115,10 +114,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       );
     });
   }
-
-  // Container _bottomNavBar() {
-  //   return
-  // }
 
   BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
     return BottomNavigationBarItem(
