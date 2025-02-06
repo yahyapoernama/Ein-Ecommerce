@@ -1,3 +1,4 @@
+import 'package:ein_ecommerce/blocs/app_connection_bloc/app_connection_bloc.dart';
 import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:ein_ecommerce/screens/cart_screen.dart';
 import 'package:ein_ecommerce/screens/chat_screen.dart';
@@ -6,6 +7,7 @@ import 'package:ein_ecommerce/screens/setting_screen.dart';
 import 'package:ein_ecommerce/screens/transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
+  Widget? _bottomNavigationBar;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,31 +31,52 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AnnotatedRegion(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        child: SafeArea(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            children: const <Widget>[
-              DashboardPage(),
-              ChatPage(),
-              CartPage(),
-              TransactionPage(),
-              SettingPage(),
-            ],
+    return BlocListener<AppConnectionBloc, AppConnectionState>(
+      listener: (context, state) {
+        if (state is ConnectedState) {
+          showBottomNavBar();
+        } else {
+          hideBottomNavBar();
+        }
+      },
+      child: Scaffold(
+          body: AnnotatedRegion(
+            value: const SystemUiOverlayStyle(
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark,
+            ),
+            child: SafeArea(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                children: const <Widget>[
+                  DashboardPage(),
+                  ChatPage(),
+                  CartPage(),
+                  TransactionPage(),
+                  SettingPage(),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
+          bottomNavigationBar: _bottomNavigationBar),
+    );
+  }
+
+  void hideBottomNavBar() {
+    setState(() {
+      _bottomNavigationBar = null;
+    });
+  }
+
+  void showBottomNavBar() {
+    setState(() {
+      _bottomNavigationBar = Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -86,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
