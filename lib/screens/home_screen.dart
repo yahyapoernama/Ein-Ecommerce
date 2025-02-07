@@ -19,27 +19,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
-  Widget? _bottomNavigationBar;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      showBottomNavBar();
     });
     _pageController.jumpToPage(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppConnectionBloc, AppConnectionState>(
-      listener: (context, state) {
-        if (state is ConnectedState) {
-          showBottomNavBar();
-        } else {
-          hideBottomNavBar();
-        }
-      },
-      child: Scaffold(
+    return BlocBuilder<AppConnectionBloc, AppConnectionState>(
+      builder: (context, state) => Scaffold(
         body: AnnotatedRegion(
           value: const SystemUiOverlayStyle(
             statusBarColor: Colors.white,
@@ -64,55 +55,51 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
           ),
         ),
-        bottomNavigationBar: _bottomNavigationBar,
+        bottomNavigationBar: state is ConnectedState
+            ? Container(
+                child: _buildBottomNavigationBar(),
+              )
+            : const SizedBox.shrink(),
       ),
     );
   }
 
-  void hideBottomNavBar() {
-    setState(() {
-      _bottomNavigationBar = null;
-    });
-  }
-
-  void showBottomNavBar() {
-    setState(() {
-      _bottomNavigationBar = Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, -3), // Shadow ke atas
-            ),
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, -3), // Shadow ke atas
+          ),
+        ],
+      ),
+      child: BottomNavigationBarTheme(
+        data: BottomNavigationBarThemeData(
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: Colors.grey,
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          fixedColor: AppColors.primary,
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false, // Sembunyikan label saat item dipilih
+          showUnselectedLabels: false, // Sembunyikan label saat item tidak dipilih
+          iconSize: 25,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: <BottomNavigationBarItem>[
+            _buildNavItem(Icons.home, 'Home', 0),
+            _buildNavItem(Icons.chat, 'Chat', 1),
+            _buildNavItem(Icons.shopping_cart, 'Cart', 2),
+            _buildNavItem(Icons.list_alt, 'Transaction', 3),
+            _buildNavItem(Icons.person, 'Account', 4),
           ],
         ),
-        child: BottomNavigationBarTheme(
-          data: BottomNavigationBarThemeData(
-            selectedItemColor: AppColors.primary,
-            unselectedItemColor: Colors.grey,
-          ),
-          child: BottomNavigationBar(
-            backgroundColor: Colors.white,
-            fixedColor: AppColors.primary,
-            type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false, // Sembunyikan label saat item dipilih
-            showUnselectedLabels: false, // Sembunyikan label saat item tidak dipilih
-            iconSize: 25,
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-            items: <BottomNavigationBarItem>[
-              _buildNavItem(Icons.home, 'Home', 0),
-              _buildNavItem(Icons.chat, 'Chat', 1),
-              _buildNavItem(Icons.shopping_cart, 'Cart', 2),
-              _buildNavItem(Icons.list_alt, 'Transaction', 3),
-              _buildNavItem(Icons.person, 'Account', 4),
-            ],
-          ),
-        ),
-      );
-    });
+      ),
+    );
   }
 
   BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {

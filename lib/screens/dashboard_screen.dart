@@ -52,14 +52,10 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
               return ShimmerHelper(
                 child: (context) => _buildDashboardBody(context),
               );
-            } else if (state is NoInternetState) {
-              return ErrorScreen(errorType: state.message);
-            } else if (state is ServerUnreachableState) {
-              return ErrorScreen(errorType: state.message);
             } else if (state is ConnectedState) {
               return _buildDashboardBody(context);
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return ErrorScreen(errorType: state.message);
             }
           },
         ),

@@ -33,7 +33,7 @@ class AppConnectionBloc extends Bloc<AppConnectionEvent, AppConnectionState> {
     } else {
       try {
         final response = await _dio.get('${_apiService.baseUrl}/status');
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(milliseconds: 500));
         if (response.statusCode == 200) {
           emit(ConnectedState());
         } else {
