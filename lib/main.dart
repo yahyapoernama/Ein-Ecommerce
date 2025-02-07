@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => AppConnectionBloc(_connectivity, _dio)),
+        BlocProvider(create: (context) => CartItemsBloc()),
         BlocProvider(create: (context) => TotalPriceBloc()),
       ],
       child: MaterialApp(

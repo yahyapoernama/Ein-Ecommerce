@@ -57,43 +57,9 @@ class CartItems extends StatefulWidget {
 }
 
 class _CartItemsState extends State<CartItems> {
-  List<Map<String, dynamic>> dummyCartItems = List.generate(10, (index) {
-    return {
-      'name': 'Product Name',
-      'price': 100000,
-      'quantity': 100,
-      'isChecked': false,
-    };
-  });
-
-  // This should be replaced with actual cart items
-  final List<Map<String, dynamic>> actualCartItems = [
-    {
-      'name': 'Product 1',
-      'price': 50000,
-      'quantity': 2,
-      'isChecked': false,
-    },
-    {
-      'name': 'Product 2',
-      'price': 50000,
-      'quantity': 1,
-      'isChecked': false,
-    },
-    {
-      'name': 'Product 3',
-      'price': 50000,
-      'quantity': 1,
-      'isChecked': false,
-    },
-  ];
-
-  List<Map<String, dynamic>> cartItems = [];
-
   @override
   void initState() {
     super.initState();
-    cartItems = actualCartItems;
   }
 
   @override
@@ -125,98 +91,102 @@ class _CartItemsState extends State<CartItems> {
     return BlocConsumer<AppConnectionBloc, AppConnectionState>(
       listener: (context, state) {
         if (state is ConnectedState) {
-          cartItems = actualCartItems;
+          context.read<CartItemsBloc>().add(const LoadCartItems([]));
         } else {
-          cartItems = dummyCartItems;
+          context.read<CartItemsBloc>().add(const InitialCartItems([]));
         }
       },
       builder: (context, state) {
-        return ListView.builder(
-          itemCount: cartItems.length,
-          itemBuilder: (context, index) {
-            final item = cartItems[index];
-            return ListTile(
-              leading: ShimmerContainer(
-                child: RoundCheckBox(
-                  animationDuration: const Duration(milliseconds: 100),
-                  checkedColor: Colors.grey[900],
-                  size: 30,
-                  isChecked: item['isChecked'],
-                  onTap: (isChecked) {
-                    setState(() {
-                      item['isChecked'] = isChecked;
-                    });
-                    if (isChecked as bool) {
-                      context.read<TotalPriceBloc>().add(UpdateTotalPrice((item['price'] * item['quantity']).toDouble()));
-                    } else {
-                      context.read<TotalPriceBloc>().add(UpdateTotalPrice(-(item['price'] * item['quantity']).toDouble()));
-                    }
-                  },
-                ),
-              ),
-              title: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.black),
-                      image: const DecorationImage(
-                        image: AssetImage(
-                          'assets/images/dashboard/shirt1.webp',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
+        return BlocBuilder<CartItemsBloc, CartItemsState>(
+          builder: (context, state) {
+            return ListView.builder(
+              itemCount: state.cartItems.length,
+              itemBuilder: (context, index) {
+                final item = state.cartItems[index];
+                return ListTile(
+                  leading: ShimmerContainer(
+                    child: RoundCheckBox(
+                      animationDuration: const Duration(milliseconds: 100),
+                      checkedColor: Colors.grey[900],
+                      size: 30,
+                      isChecked: item['isChecked'],
+                      onTap: (isChecked) {
+                        setState(() {
+                          item['isChecked'] = isChecked;
+                        });
+                        if (isChecked as bool) {
+                          context.read<TotalPriceBloc>().add(UpdateTotalPrice((item['price'] * item['quantity']).toDouble()));
+                        } else {
+                          context.read<TotalPriceBloc>().add(UpdateTotalPrice(-(item['price'] * item['quantity']).toDouble()));
+                        }
+                      },
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  ShimmerContainer(
-                    width: MediaQuery.of(context).size.width * 0.47,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item['name'],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          'Rp ${item['price']} x ${item['quantity']}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
+                  title: Row(
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.black),
+                          image: const DecorationImage(
+                            image: AssetImage(
+                              'assets/images/dashboard/shirt1.webp',
+                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ],
+                      ),
+                      const SizedBox(width: 12),
+                      ShimmerContainer(
+                        width: MediaQuery.of(context).size.width * 0.47,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item['name'],
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Rp ${item['price']} x ${item['quantity']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: ShimmerContainer(
+                    width: 50,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          state.cartItems.removeAt(index);
+                        });
+                        if (item['isChecked'] == true) {
+                          context.read<TotalPriceBloc>().add(
+                                UpdateTotalPrice(
+                                  -(item['price'] * item['quantity']).toDouble(),
+                                ),
+                              );
+                        }
+                      },
                     ),
                   ),
-                ],
-              ),
-              trailing: ShimmerContainer(
-                width: 50,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      cartItems.removeAt(index);
-                    });
-                    if (item['isChecked'] == true) {
-                      context.read<TotalPriceBloc>().add(
-                            UpdateTotalPrice(
-                              -(item['price'] * item['quantity']).toDouble(),
-                            ),
-                          );
-                    }
-                  },
-                ),
-              ),
+                );
+              },
             );
           },
         );

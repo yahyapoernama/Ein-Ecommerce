@@ -27,3 +27,20 @@ abstract class CheckItemEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+abstract class CartItemsEvent extends Equatable {
+  final List<Map<String, dynamic>> cartItems;
+  
+  const CartItemsEvent(this.cartItems);
+
+  @override
+  List<Object> get props => [cartItems];
+}
+
+class InitialCartItems extends CartItemsEvent {
+  const InitialCartItems(super.cartItems);
+}
+
+class LoadCartItems extends CartItemsEvent {
+  const LoadCartItems(super.cartItems);
+}

@@ -28,3 +28,24 @@ class TotalPriceBloc extends Bloc<TotalPriceEvent, TotalPriceState> {
     emit(const TotalPriceState(totalPrice: 0));
   }
 }
+
+class CartItemsBloc extends Bloc<CartItemsEvent, CartItemsState> {
+  CartItemsBloc() : super(CartItemsInitial()) {
+    on<InitialCartItems>(_onInitialCartItems);
+    on<LoadCartItems>(_onLoadCartItems);
+  }
+
+  Future<void> _onInitialCartItems(
+    InitialCartItems event,
+    Emitter<CartItemsState> emit,
+  ) async {
+    emit(CartItemsInitial());
+  }
+
+  Future<void> _onLoadCartItems(
+    LoadCartItems event,
+    Emitter<CartItemsState> emit,
+  ) async {
+    emit(CartItemsLoaded());
+  }
+}
