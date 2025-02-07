@@ -1,9 +1,11 @@
 import 'package:ein_ecommerce/blocs/app_connection_bloc/app_connection_bloc.dart';
+import 'package:ein_ecommerce/blocs/cart_bloc/cart_bloc.dart';
 import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:ein_ecommerce/screens/connection/error_screen.dart';
 import 'package:ein_ecommerce/utils/shimmer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class CartPage extends StatefulWidget {
@@ -31,8 +33,18 @@ class _CartPageState extends State<CartPage> with AutomaticKeepAliveClientMixin 
           ),
         ),
       ),
-      body: const CartItems(),
-      bottomNavigationBar: const CheckoutSection(),
+      body: const SafeArea(
+        child: CartItems(),
+      ),
+      bottomNavigationBar: BlocBuilder<AppConnectionBloc, AppConnectionState>(
+        builder: (context, state) {
+          if (state is ConnectedState || state is AppConnectionInitial) {
+            return const CheckoutSection();
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      ),
     );
   }
 }
@@ -45,42 +57,12 @@ class CartItems extends StatefulWidget {
 }
 
 class _CartItemsState extends State<CartItems> {
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      displacement: 20,
-      onRefresh: () async {
-        context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
-      },
-      color: AppColors.primary,
-      backgroundColor: Colors.white,
-      child: Scaffold(
-        body: BlocBuilder<AppConnectionBloc, AppConnectionState>(
-          builder: (context, state) {
-            if (state is AppConnectionInitial) {
-              return ShimmerHelper(
-                child: (context) => _buildCartBody(context),
-              );
-            } else if (state is NoInternetState) {
-              return ErrorScreen(errorType: state.message);
-            } else if (state is ServerUnreachableState) {
-              return ErrorScreen(errorType: state.message);
-            } else if (state is ConnectedState) {
-              return _buildCartBody(context);
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ),
-    );
-  }
-
   List<Map<String, dynamic>> dummyCartItems = List.generate(10, (index) {
     return {
       'name': 'Product Name',
       'price': 100000,
       'quantity': 100,
+      'isChecked': false,
     };
   });
 
@@ -90,16 +72,19 @@ class _CartItemsState extends State<CartItems> {
       'name': 'Product 1',
       'price': 50000,
       'quantity': 2,
+      'isChecked': false,
     },
     {
       'name': 'Product 2',
       'price': 50000,
       'quantity': 1,
+      'isChecked': false,
     },
     {
       'name': 'Product 3',
       'price': 50000,
       'quantity': 1,
+      'isChecked': false,
     },
   ];
 
@@ -108,7 +93,32 @@ class _CartItemsState extends State<CartItems> {
   @override
   void initState() {
     super.initState();
-    cartItems = dummyCartItems;
+    cartItems = actualCartItems;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      displacement: 20,
+      onRefresh: () async {
+        context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
+      },
+      color: AppColors.primary,
+      backgroundColor: Colors.white,
+      child: BlocBuilder<AppConnectionBloc, AppConnectionState>(
+        builder: (context, state) {
+          if (state is AppConnectionInitial) {
+            return ShimmerHelper(
+              child: (context) => _buildCartBody(context),
+            );
+          } else if (state is ConnectedState) {
+            return _buildCartBody(context);
+          } else {
+            return ErrorScreen(errorType: state.message);
+          }
+        },
+      ),
+    );
   }
 
   Widget _buildCartBody(BuildContext context) {
@@ -131,14 +141,24 @@ class _CartItemsState extends State<CartItems> {
                   animationDuration: const Duration(milliseconds: 100),
                   checkedColor: Colors.grey[900],
                   size: 30,
-                  onTap: (value) {},
+                  isChecked: item['isChecked'],
+                  onTap: (isChecked) {
+                    setState(() {
+                      item['isChecked'] = isChecked;
+                    });
+                    if (isChecked as bool) {
+                      context.read<TotalPriceBloc>().add(UpdateTotalPrice((item['price'] * item['quantity']).toDouble()));
+                    } else {
+                      context.read<TotalPriceBloc>().add(UpdateTotalPrice(-(item['price'] * item['quantity']).toDouble()));
+                    }
+                  },
                 ),
               ),
               title: Row(
                 children: [
                   Container(
-                    width: 60,
-                    height: 60,
+                    width: 50,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -153,17 +173,22 @@ class _CartItemsState extends State<CartItems> {
                   ),
                   const SizedBox(width: 12),
                   ShimmerContainer(
+                    width: MediaQuery.of(context).size.width * 0.47,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           item['name'],
                           style: const TextStyle(fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           'Rp ${item['price']} x ${item['quantity']}',
                           style: const TextStyle(
                             fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
                           ),
                         ),
                       ],
@@ -172,13 +197,24 @@ class _CartItemsState extends State<CartItems> {
                 ],
               ),
               trailing: ShimmerContainer(
-                child: Text(
-                  'Rp ${item['price'] * item['quantity']}',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[900],
+                width: 50,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
                   ),
+                  onPressed: () {
+                    setState(() {
+                      cartItems.removeAt(index);
+                    });
+                    if (item['isChecked'] == true) {
+                      context.read<TotalPriceBloc>().add(
+                            UpdateTotalPrice(
+                              -(item['price'] * item['quantity']).toDouble(),
+                            ),
+                          );
+                    }
+                  },
                 ),
               ),
             );
@@ -189,9 +225,14 @@ class _CartItemsState extends State<CartItems> {
   }
 }
 
-class CheckoutSection extends StatelessWidget {
+class CheckoutSection extends StatefulWidget {
   const CheckoutSection({super.key});
 
+  @override
+  State<CheckoutSection> createState() => _CheckoutSectionState();
+}
+
+class _CheckoutSectionState extends State<CheckoutSection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -295,13 +336,21 @@ class CheckoutSection extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Text(
-                  'Rp 200.000',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[900],
-                  ),
+                child: BlocBuilder<TotalPriceBloc, TotalPriceState>(
+                  builder: (context, state) {
+                    return Text(
+                      NumberFormat.currency(
+                        locale: 'id',
+                        symbol: 'Rp ',
+                        decimalDigits: 0,
+                      ).format(state.totalPrice),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[900],
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

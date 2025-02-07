@@ -1,6 +1,7 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:ein_ecommerce/blocs/app_connection_bloc/app_connection_bloc.dart';
+import 'package:ein_ecommerce/blocs/cart_bloc/cart_bloc.dart';
 import 'package:ein_ecommerce/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:ein_ecommerce/utils/color_helper.dart';
 import 'package:ein_ecommerce/routes/app_router.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => AppConnectionBloc(_connectivity, _dio)),
+        BlocProvider(create: (context) => TotalPriceBloc()),
       ],
       child: MaterialApp(
         title: 'Ein Ecommerce',
