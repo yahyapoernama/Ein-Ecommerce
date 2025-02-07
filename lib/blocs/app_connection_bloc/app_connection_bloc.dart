@@ -37,7 +37,7 @@ class AppConnectionBloc extends Bloc<AppConnectionEvent, AppConnectionState> {
         if (response.statusCode == 200) {
           emit(ConnectedState());
         } else {
-          emit((const ServerUnreachableState()));
+          emit(const ServerUnreachableState());
         }
       } on DioError catch (e) {
         if (e.type == DioErrorType.connectTimeout ||
