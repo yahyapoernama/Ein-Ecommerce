@@ -28,6 +28,7 @@ class ShimmerContainer extends StatelessWidget {
   final double? height;
   final double borderRadius;
   final Widget? child;
+  final EdgeInsets? margin;
 
   const ShimmerContainer({
     super.key,
@@ -35,6 +36,7 @@ class ShimmerContainer extends StatelessWidget {
     this.height,
     this.borderRadius = 8,
     required this.child,
+    this.margin,
   });
 
   @override
@@ -42,6 +44,7 @@ class ShimmerContainer extends StatelessWidget {
     return Container(
       width: width,
       height: height,
+      margin: margin,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(borderRadius),

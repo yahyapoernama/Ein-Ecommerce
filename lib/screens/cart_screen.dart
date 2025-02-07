@@ -308,12 +308,15 @@ class _CheckoutSectionState extends State<CheckoutSection> {
               Expanded(
                 child: BlocBuilder<TotalPriceBloc, TotalPriceState>(
                   builder: (context, state) {
+                    final connectState = context.read<AppConnectionBloc>().state;
                     return Text(
-                      NumberFormat.currency(
-                        locale: 'id',
-                        symbol: 'Rp ',
-                        decimalDigits: 0,
-                      ).format(state.totalPrice),
+                      connectState != ConnectedState()
+                          ? 'Rp XXXXXXXXXX'
+                          : NumberFormat.currency(
+                              locale: 'id',
+                              symbol: 'Rp ',
+                              decimalDigits: 0,
+                            ).format(state.totalPrice),
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
