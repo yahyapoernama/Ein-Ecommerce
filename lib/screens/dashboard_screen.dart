@@ -3,6 +3,7 @@ import 'package:ein_ecommerce/components/buttons/primary_button.dart';
 import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:ein_ecommerce/screens/connection/error_screen.dart';
 import 'package:ein_ecommerce/screens/search_screen.dart';
+import 'package:ein_ecommerce/utils/refresh_helper.dart';
 import 'package:ein_ecommerce/utils/shimmer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,13 +39,10 @@ class _DashboardPageState extends State<DashboardPage> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return RefreshIndicator(
-      displacement: 20,
+    return RefreshHelper(
       onRefresh: () async {
         context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
       },
-      color: AppColors.primary,
-      backgroundColor: Colors.white,
       child: Scaffold(
         body: BlocBuilder<AppConnectionBloc, AppConnectionState>(
           builder: (context, state) {

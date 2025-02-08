@@ -1,7 +1,7 @@
 import 'package:ein_ecommerce/blocs/app_connection_bloc/app_connection_bloc.dart';
 import 'package:ein_ecommerce/blocs/cart_bloc/cart_bloc.dart';
-import 'package:ein_ecommerce/constants/app_colors.dart';
 import 'package:ein_ecommerce/screens/connection/error_screen.dart';
+import 'package:ein_ecommerce/utils/refresh_helper.dart';
 import 'package:ein_ecommerce/utils/shimmer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,13 +65,10 @@ class CartItems extends StatefulWidget {
 class _CartItemsState extends State<CartItems> {
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      displacement: 20,
+    return RefreshHelper(
       onRefresh: () async {
         context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
       },
-      color: AppColors.primary,
-      backgroundColor: Colors.white,
       child: BlocBuilder<AppConnectionBloc, AppConnectionState>(
         builder: (context, state) {
           if (state is AppConnectionInitial) {
