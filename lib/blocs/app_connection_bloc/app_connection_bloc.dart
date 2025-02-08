@@ -19,6 +19,7 @@ class AppConnectionBloc extends Bloc<AppConnectionEvent, AppConnectionState> {
     _dio.options.receiveTimeout = 20000; // 30 detik
     _dio.options.sendTimeout = 20000; // 30 detik
 
+    on<InitAppConnectionEvent>((event, emit) => emit(AppConnectionInitial()));
     on<CheckAppConnectionEvent>(_onCheckConnection);
   }
 

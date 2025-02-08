@@ -19,8 +19,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
+  Map<String, bool> isFirstInit = {
+    'Dashboard': true,
+    'Chat': true,
+    'Cart': true,
+    'Transaction': true,
+    'Setting': true,
+  };
 
   void _onItemTapped(int index) {
+    if (index == 2 && isFirstInit['Cart'] == true) {
+      isFirstInit['Cart'] = false;
+      context.read<AppConnectionBloc>().add(InitAppConnectionEvent());
+    }
     setState(() {
       _selectedIndex = index;
     });

@@ -20,6 +20,12 @@ class _CartPageState extends State<CartPage> with AutomaticKeepAliveClientMixin 
   bool get wantKeepAlive => true;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<AppConnectionBloc>().add(CheckAppConnectionEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
@@ -57,11 +63,6 @@ class CartItems extends StatefulWidget {
 }
 
 class _CartItemsState extends State<CartItems> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(

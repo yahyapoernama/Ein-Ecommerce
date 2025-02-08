@@ -8,3 +8,5 @@ abstract class AppConnectionEvent extends Equatable {
 }
 
 class CheckAppConnectionEvent extends AppConnectionEvent {}
+
+class InitAppConnectionEvent extends AppConnectionEvent {}
