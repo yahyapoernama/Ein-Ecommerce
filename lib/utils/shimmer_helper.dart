@@ -6,11 +6,14 @@ class ShimmerHelper extends StatelessWidget {
   final Color baseColor;
   final Color highlightColor;
 
+  static const Color defaultBaseColor = Color(0xFF666666);
+  static const Color defaultHighlightColor = Color(0xFF919191);
+
   const ShimmerHelper({
     super.key,
     required this.child,
-    this.baseColor = const Color(0xFF666666),
-    this.highlightColor = const Color(0xFF919191),
+    this.baseColor = defaultBaseColor,
+    this.highlightColor = defaultHighlightColor,
   });
 
   @override
